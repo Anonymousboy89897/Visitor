@@ -82,11 +82,11 @@ const AddVisitor = () => {
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                   <div>
                     <label className="block text-sm font-bold text-slate-700 mb-2">Full Name *</label>
-                    <input type="text" name="fullName" value={formData.fullName} onChange={handleChange} className="w-full px-4 py-3 bg-slate-50 border border-slate-200 rounded-xl focus:bg-white focus:outline-none focus:ring-2 focus:ring-indigo-200 focus:border-indigo-500 transition-all" />
+                    <input required type="text" name="fullName" value={formData.fullName} onChange={handleChange} className="w-full px-4 py-3 bg-slate-50 border border-slate-200 rounded-xl focus:bg-white focus:outline-none focus:ring-2 focus:ring-indigo-200 focus:border-indigo-500 transition-all" />
                   </div>
                   <div>
                     <label className="block text-sm font-bold text-slate-700 mb-2">Phone Number *</label>
-                    <input type="text" name="phone" value={formData.phone} onChange={handleChange} className="w-full px-4 py-3 bg-slate-50 border border-slate-200 rounded-xl focus:bg-white focus:outline-none focus:ring-2 focus:ring-indigo-200 focus:border-indigo-500 transition-all" />
+                    <input required type="text" name="phone" value={formData.phone} onChange={handleChange} className="w-full px-4 py-3 bg-slate-50 border border-slate-200 rounded-xl focus:bg-white focus:outline-none focus:ring-2 focus:ring-indigo-200 focus:border-indigo-500 transition-all" />
                   </div>
                   <div>
                     <label className="block text-sm font-bold text-slate-700 mb-2">Email Address</label>
@@ -94,7 +94,7 @@ const AddVisitor = () => {
                   </div>
                   <div>
                     <label className="block text-sm font-bold text-slate-700 mb-2">Purpose of Visit *</label>
-                    <select name="purpose" value={formData.purpose} onChange={handleChange} className="w-full px-4 py-3 bg-slate-50 border border-slate-200 rounded-xl focus:bg-white focus:outline-none focus:ring-2 focus:ring-indigo-200 focus:border-indigo-500 transition-all">
+                    <select required name="purpose" value={formData.purpose} onChange={handleChange} className="w-full px-4 py-3 bg-slate-50 border border-slate-200 rounded-xl focus:bg-white focus:outline-none focus:ring-2 focus:ring-indigo-200 focus:border-indigo-500 transition-all">
                       <option value="">Select Purpose</option>
                       <option value="Meeting">Meeting</option>
                       <option value="Internship">Internship</option>
@@ -104,15 +104,15 @@ const AddVisitor = () => {
                   </div>
                   <div>
                     <label className="block text-sm font-bold text-slate-700 mb-2">Person to Meet *</label>
-                    <input type="text" name="personToMeet" value={formData.personToMeet} onChange={handleChange} className="w-full px-4 py-3 bg-slate-50 border border-slate-200 rounded-xl focus:bg-white focus:outline-none focus:ring-2 focus:ring-indigo-200 focus:border-indigo-500 transition-all" />
+                    <input required type="text" name="personToMeet" value={formData.personToMeet} onChange={handleChange} className="w-full px-4 py-3 bg-slate-50 border border-slate-200 rounded-xl focus:bg-white focus:outline-none focus:ring-2 focus:ring-indigo-200 focus:border-indigo-500 transition-all" />
                   </div>
                   <div>
-                    <label className="block text-sm font-bold text-slate-700 mb-2">Department</label>
-                    <input type="text" name="department" value={formData.department} onChange={handleChange} className="w-full px-4 py-3 bg-slate-50 border border-slate-200 rounded-xl focus:bg-white focus:outline-none focus:ring-2 focus:ring-indigo-200 focus:border-indigo-500 transition-all" />
+                    <label className="block text-sm font-bold text-slate-700 mb-2">Department *</label>
+                    <input required type="text" name="department" value={formData.department} onChange={handleChange} className="w-full px-4 py-3 bg-slate-50 border border-slate-200 rounded-xl focus:bg-white focus:outline-none focus:ring-2 focus:ring-indigo-200 focus:border-indigo-500 transition-all" />
                   </div>
                   <div>
-                    <label className="block text-sm font-bold text-slate-700 mb-2">ID Type</label>
-                    <select name="idType" value={formData.idType} onChange={handleChange} className="w-full px-4 py-3 bg-slate-50 border border-slate-200 rounded-xl focus:bg-white focus:outline-none focus:ring-2 focus:ring-indigo-200 focus:border-indigo-500 transition-all">
+                    <label className="block text-sm font-bold text-slate-700 mb-2">ID Type *</label>
+                    <select required name="idType" value={formData.idType} onChange={handleChange} className="w-full px-4 py-3 bg-slate-50 border border-slate-200 rounded-xl focus:bg-white focus:outline-none focus:ring-2 focus:ring-indigo-200 focus:border-indigo-500 transition-all">
                       <option value="Aadhar">Aadhar</option>
                       <option value="PAN">PAN</option>
                       <option value="Driving License">Driving License</option>
@@ -120,8 +120,8 @@ const AddVisitor = () => {
                     </select>
                   </div>
                   <div>
-                    <label className="block text-sm font-bold text-slate-700 mb-2">ID Number</label>
-                    <input type="text" name="idNumber" value={formData.idNumber} onChange={handleChange} className="w-full px-4 py-3 bg-slate-50 border border-slate-200 rounded-xl focus:bg-white focus:outline-none focus:ring-2 focus:ring-indigo-200 focus:border-indigo-500 transition-all" />
+                    <label className="block text-sm font-bold text-slate-700 mb-2">ID Number *</label>
+                    <input required type="text" name="idNumber" value={formData.idNumber} onChange={handleChange} className="w-full px-4 py-3 bg-slate-50 border border-slate-200 rounded-xl focus:bg-white focus:outline-none focus:ring-2 focus:ring-indigo-200 focus:border-indigo-500 transition-all" />
                   </div>
                   <div>
                     <label className="block text-sm font-bold text-slate-700 mb-2">Vehicle Number</label>
