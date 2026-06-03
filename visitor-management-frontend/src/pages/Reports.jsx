@@ -113,19 +113,24 @@ const Reports = () => {
     });
     chartData.sort((a,b) => b.visitors - a.visitors);
   } else {
-    // Otherwise, show Visitors over Time (by Date)
-    const dateMap = {};
+    // Otherwise, show Month-wise visitors
+    const monthMap = {};
     filteredVisitors.forEach(v => {
       const recordDateStr = v.created_at?.split(' ')[0] || v.check_in?.split(' ')[0];
       if (recordDateStr) {
-        dateMap[recordDateStr] = (dateMap[recordDateStr] || 0) + 1;
+        // Extract YYYY-MM
+        const yearMonth = recordDateStr.substring(0, 7);
+        monthMap[yearMonth] = (monthMap[yearMonth] || 0) + 1;
       }
     });
     
-    Object.keys(dateMap).sort().forEach(key => {
-      // Just take the MM-DD for cleaner chart labels
-      const shortDate = key.split('-').slice(1).join('/');
-      chartData.push({ name: shortDate || key, visitors: dateMap[key] });
+    Object.keys(monthMap).sort().forEach(key => {
+      // Create a readable label like "Jan 2026"
+      const dateObj = new Date(key + "-01T00:00:00");
+      const monthLabel = !isNaN(dateObj.getTime()) 
+        ? dateObj.toLocaleDateString('en-US', { month: 'short', year: 'numeric' })
+        : key;
+      chartData.push({ name: monthLabel, visitors: monthMap[key] });
     });
   }
 
@@ -227,7 +232,7 @@ const Reports = () => {
             <div className="p-6 border-b border-slate-100 bg-slate-50/50">
               <h3 className="font-bold text-slate-700 flex items-center gap-2">
                 <FaChartLine className="text-indigo-400" /> 
-                {filterDate ? 'Visitors by Purpose (Daily Distribution)' : 'Visitor Trends Over Time'}
+                {filterDate ? 'Visitors by Purpose (Daily Distribution)' : 'Monthly Visitors (Paryatan NGO)'}
               </h3>
             </div>
             <div className="p-6">
