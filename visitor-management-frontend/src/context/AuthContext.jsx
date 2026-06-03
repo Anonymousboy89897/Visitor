@@ -17,7 +17,8 @@ export const AuthProvider = ({ children }) => {
 
   const login = async (email, password) => {
       // Dummy login for Apps Script integration
-      if (email === 'admin@paryatan.org' && password === 'Paryatan@Auth#2026!') {
+      const cleanEmail = email?.trim().toLowerCase();
+      if (cleanEmail === 'admin@paryatan.org' && password === 'Paryatan@Auth#2026!') {
         localStorage.setItem('token', 'dummy-token');
         setIsAuthenticated(true);
         return { success: true };

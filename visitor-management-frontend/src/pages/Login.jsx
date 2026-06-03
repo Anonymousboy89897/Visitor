@@ -48,7 +48,7 @@ const Login = () => {
               <input
                 type="email"
                 className="w-full pl-12 pr-4 py-3 bg-slate-50 rounded-xl border border-slate-200 focus:bg-white focus:outline-none focus:border-indigo-500 focus:ring-2 focus:ring-indigo-200 transition-all"
-                placeholder="admin@gmail.com"
+                placeholder="admin@paryatan.org"
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
                 required
