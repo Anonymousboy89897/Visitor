@@ -136,6 +136,26 @@ const Reports = () => {
     });
   }
 
+  // Compute average visitors per day safely
+  const avgVisitors = (() => {
+    if (filterMonth) {
+      // Approximate month as 30 days
+      return Math.round((totalInPeriod / 30) * 10) / 10;
+    }
+    if (filterDate) {
+      return totalInPeriod;
+    }
+    // Overall average: days since first visitor or 1 day minimum
+    const firstDateStr = visitors[0]?.created_at || visitors[0]?.check_in;
+    if (firstDateStr) {
+      const firstDate = new Date(firstDateStr);
+      const now = new Date();
+      const diffDays = Math.max(1, Math.ceil((now - firstDate) / (1000 * 60 * 60 * 24)));
+      return Math.round((totalInPeriod / diffDays) * 10) / 10;
+    }
+    return 0;
+  })();
+
   return (
     <div className="max-w-6xl mx-auto space-y-8">
       <div className="flex flex-col md:flex-row md:items-end justify-between gap-6">
@@ -218,9 +238,7 @@ const Reports = () => {
             <div className="bg-white p-6 rounded-3xl border border-slate-100 shadow-xl shadow-slate-200/40 flex items-center justify-between group hover:-translate-y-1 transition-transform duration-300">
               <div>
                 <p className="text-sm font-bold text-slate-400 uppercase tracking-wider mb-1">Avg Visitors / Day</p>
-                <h3 className="text-4xl font-black text-slate-800">
-                  {filterMonth ? Math.round((totalInPeriod / 30) * 10) / 10 : (filterDate ? totalInPeriod : Math.round((totalInPeriod / Math.max(1, Math.ceil((new Date() - new Date(visitors[0]?.created_at || new Date())) / (1000 * 60 * 60 * 24)))) * 10) / 10 || 0)}
-                </h3>
+                <h3 className="text-4xl font-black text-slate-800">{avgVisitors}</h3>
                 <p className="text-xs font-medium text-slate-400 mt-2">Estimated average</p>
               </div>
               <div className="h-16 w-16 bg-emerald-50 rounded-2xl flex items-center justify-center text-emerald-500 group-hover:bg-emerald-500 group-hover:text-white transition-colors duration-300">
