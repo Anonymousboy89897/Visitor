@@ -97,10 +97,9 @@ const AddVisitor = () => {
                     <select name="purpose" value={formData.purpose} onChange={handleChange} className="w-full px-4 py-3 bg-slate-50 border border-slate-200 rounded-xl focus:bg-white focus:outline-none focus:ring-2 focus:ring-indigo-200 focus:border-indigo-500 transition-all">
                       <option value="">Select Purpose</option>
                       <option value="Meeting">Meeting</option>
-                      <option value="Interview">Interview</option>
-                      <option value="Delivery">Delivery</option>
-                      <option value="Personal">Personal</option>
-                      <option value="Other">Other</option>
+                      <option value="Internship">Internship</option>
+                      <option value="Personal work">Personal work</option>
+                      <option value="Student related query">Student related query</option>
                     </select>
                   </div>
                   <div>
