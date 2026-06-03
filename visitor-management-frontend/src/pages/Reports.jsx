@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { FaDownload, FaChartLine, FaUsers, FaBuilding, FaBriefcase } from 'react-icons/fa';
-import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, Cell } from 'recharts';
+import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer } from 'recharts';
 
 const Reports = () => {
   const [visitors, setVisitors] = useState([]);
@@ -239,7 +239,7 @@ const Reports = () => {
               {chartData.length > 0 ? (
                 <div className="h-80 w-full">
                   <ResponsiveContainer width="100%" height="100%">
-                    <BarChart data={chartData} margin={{ top: 10, right: 30, left: 0, bottom: 20 }}>
+                    <LineChart data={chartData} margin={{ top: 10, right: 30, left: 0, bottom: 20 }}>
                       <CartesianGrid strokeDasharray="3 3" vertical={false} stroke="#e2e8f0" />
                       <XAxis 
                         dataKey="name" 
@@ -256,15 +256,18 @@ const Reports = () => {
                         dx={-10}
                       />
                       <Tooltip 
-                        cursor={{ fill: '#f8fafc' }} 
+                        cursor={{ stroke: '#cbd5e1', strokeWidth: 2, strokeDasharray: '5 5' }} 
                         contentStyle={{ borderRadius: '12px', border: '1px solid #e2e8f0', boxShadow: '0 10px 15px -3px rgb(0 0 0 / 0.1)', fontWeight: 'bold' }}
                       />
-                      <Bar dataKey="visitors" fill="#6366f1" radius={[6, 6, 0, 0]} barSize={40}>
-                        {chartData.map((entry, index) => (
-                          <Cell key={`cell-${index}`} fill={index % 2 === 0 ? '#6366f1' : '#a855f7'} />
-                        ))}
-                      </Bar>
-                    </BarChart>
+                      <Line 
+                        type="monotone" 
+                        dataKey="visitors" 
+                        stroke="#8b5cf6" 
+                        strokeWidth={4} 
+                        dot={{ r: 5, fill: '#ffffff', stroke: '#8b5cf6', strokeWidth: 3 }} 
+                        activeDot={{ r: 8, fill: '#8b5cf6', stroke: '#ffffff', strokeWidth: 2 }}
+                      />
+                    </LineChart>
                   </ResponsiveContainer>
                 </div>
               ) : (
