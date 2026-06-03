@@ -15,11 +15,25 @@ const Dashboard = () => {
       try {
         const { data } = await api.get('?action=getAll');
         
-        const today = new Date().toISOString().split('T')[0];
+        const responseData = data;
         
-        const totalToday = data.filter(v => v.check_in.startsWith(today)).length;
-        const active = data.filter(v => v.status === 'Active').length;
-        const completed = data.filter(v => v.status === 'Completed').length;
+        // Convert Apps Script object response to an array if needed
+        const visitorsArray = Array.isArray(responseData) 
+          ? responseData 
+          : Object.keys(responseData)
+              .filter(key => key !== 'status' && typeof responseData[key] === 'object')
+              .map(key => responseData[key]);
+
+        const today = new Date().toLocaleDateString();
+        
+        const totalToday = visitorsArray.filter(v => {
+          if (!v.check_in) return false;
+          // check_in might be a string like "6/3/2026, 1:45 PM" or ISO string
+          return new Date(v.check_in).toLocaleDateString() === today;
+        }).length;
+        
+        const active = visitorsArray.filter(v => v.status === 'Active').length;
+        const completed = visitorsArray.filter(v => v.status === 'Completed').length;
         
         setStats({ totalToday, active, completed });
       } catch (error) {
