@@ -38,7 +38,13 @@ const AddVisitor = () => {
     setMessage('Sending data to Google Sheets...');
     
     try {
-      const targetUrl = `${baseUrl}?action=add&payload=${encodeURIComponent(JSON.stringify(formData))}&t=${new Date().getTime()}`;
+      // Force uppercase for PAN
+      const submitData = { ...formData };
+      if (submitData.idType === 'PAN') {
+        submitData.idNumber = submitData.idNumber.toUpperCase();
+      }
+      
+      const targetUrl = `${baseUrl}?action=add&payload=${encodeURIComponent(JSON.stringify(submitData))}&t=${new Date().getTime()}`;
       
       const response = await fetch(targetUrl, {
         method: 'GET',
@@ -62,6 +68,23 @@ const AddVisitor = () => {
       setLoading(false);
     }
   };
+
+  const getIdConstraints = () => {
+    switch (formData.idType) {
+      case 'Aadhar':
+        return { pattern: "[0-9]{12}", maxLength: 12, minLength: 12, title: "Aadhar must be exactly 12 digits" };
+      case 'PAN':
+        return { pattern: "[a-zA-Z]{5}[0-9]{4}[a-zA-Z]{1}", maxLength: 10, minLength: 10, title: "PAN must be 10 alphanumeric characters (e.g., ABCDE1234F)", className: "uppercase" };
+      case 'Driving License':
+        return { maxLength: 16, minLength: 10, title: "Driving License must be between 10 and 16 characters" };
+      case 'Passport':
+        return { maxLength: 9, minLength: 8, title: "Passport must be 8 or 9 characters" };
+      default:
+        return { minLength: 4 };
+    }
+  };
+
+  const idConstraints = getIdConstraints();
 
   return (
     <>
@@ -137,7 +160,16 @@ const AddVisitor = () => {
                   </div>
                   <div>
                     <label className="block text-sm font-bold text-slate-700 mb-2">ID Number <span className="text-red-500">*</span></label>
-                    <input required minLength="4" type="text" name="idNumber" value={formData.idNumber} onChange={handleChange} className="w-full px-4 py-3 bg-slate-50 border border-slate-200 rounded-xl focus:bg-white focus:outline-none focus:ring-2 focus:ring-indigo-200 focus:border-indigo-500 transition-all font-mono" placeholder="XXXX-XXXX-XXXX" />
+                    <input 
+                      required 
+                      type="text" 
+                      name="idNumber" 
+                      value={formData.idNumber} 
+                      onChange={handleChange} 
+                      {...idConstraints}
+                      className={`w-full px-4 py-3 bg-slate-50 border border-slate-200 rounded-xl focus:bg-white focus:outline-none focus:ring-2 focus:ring-indigo-200 focus:border-indigo-500 transition-all font-mono ${idConstraints.className || ''}`}
+                      placeholder={formData.idType === 'Aadhar' ? '123456789012' : (formData.idType === 'PAN' ? 'ABCDE1234F' : 'XXXX-XXXX-XXXX')} 
+                    />
                   </div>
                 </div>
               </div>
