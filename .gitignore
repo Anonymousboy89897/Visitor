@@ -4,3 +4,5 @@ dist/
 .DS_Store
 visitor-management-frontend/dist/
 visitor-management-backend/credentials/
+
+.vercel
