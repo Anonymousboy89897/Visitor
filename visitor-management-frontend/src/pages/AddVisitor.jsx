@@ -107,7 +107,7 @@ const AddVisitor = () => {
                     <input required type="text" name="personToMeet" value={formData.personToMeet} onChange={handleChange} className="w-full px-4 py-3 bg-slate-50 border border-slate-200 rounded-xl focus:bg-white focus:outline-none focus:ring-2 focus:ring-indigo-200 focus:border-indigo-500 transition-all" />
                   </div>
                   <div>
-                    <label className="block text-sm font-bold text-slate-700 mb-2">Department *</label>
+                    <label className="block text-sm font-bold text-slate-700 mb-2">Person Name *</label>
                     <input required type="text" name="department" value={formData.department} onChange={handleChange} className="w-full px-4 py-3 bg-slate-50 border border-slate-200 rounded-xl focus:bg-white focus:outline-none focus:ring-2 focus:ring-indigo-200 focus:border-indigo-500 transition-all" />
                   </div>
                   <div>
