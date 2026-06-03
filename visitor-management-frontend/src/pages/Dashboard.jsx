@@ -1,6 +1,4 @@
 import React, { useState, useEffect } from 'react';
-import Sidebar from '../components/Sidebar';
-import Navbar from '../components/Navbar';
 import api from '../services/api';
 import { FaUsers, FaCheckCircle, FaClock, FaSignOutAlt } from 'react-icons/fa';
 
@@ -58,12 +56,7 @@ const Dashboard = () => {
   ];
 
   return (
-    <div className="flex h-screen bg-gray-100">
-      <Sidebar />
-      <div className="flex-1 flex flex-col overflow-hidden">
-        <Navbar title="Dashboard" />
-        
-        <main className="flex-1 overflow-x-hidden overflow-y-auto bg-slate-50 p-8">
+    <>
           {loading ? (
             <div className="flex justify-center items-center h-full">
               <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-indigo-600"></div>
@@ -113,9 +106,7 @@ const Dashboard = () => {
               </div>
             </div>
           )}
-        </main>
-      </div>
-    </div>
+    </>
   );
 };
 

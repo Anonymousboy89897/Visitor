@@ -1,7 +1,4 @@
 import React, { useState, useEffect } from 'react';
-import Sidebar from '../components/Sidebar';
-import Navbar from '../components/Navbar';
-
 import { FaSignOutAlt, FaSearch } from 'react-icons/fa';
 
 const ActiveVisitors = () => {
@@ -52,13 +49,8 @@ const ActiveVisitors = () => {
   );
 
   return (
-    <div className="flex h-screen bg-gray-100">
-      <Sidebar />
-      <div className="flex-1 flex flex-col overflow-hidden">
-        <Navbar title="Active Visitors" />
-        <main className="flex-1 overflow-x-hidden overflow-y-auto bg-gray-50 p-8">
-          
-          <div className="mb-6 flex justify-between items-center">
+    <>
+      <div className="mb-6 flex justify-between items-center">
             <div className="relative w-64">
               <span className="absolute inset-y-0 left-0 flex items-center pl-3 text-gray-400">
                 <FaSearch />
@@ -80,7 +72,8 @@ const ActiveVisitors = () => {
                 <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-indigo-600"></div>
               </div>
             ) : (
-              <table className="min-w-full divide-y divide-gray-200">
+              <div className="overflow-x-auto">
+                <table className="min-w-full divide-y divide-gray-200">
                 <thead className="bg-slate-50/80 backdrop-blur-sm border-b border-slate-200">
                   <tr>
                     <th className="px-6 py-4 text-left text-xs font-bold text-slate-500 uppercase tracking-wider">Visitor ID</th>
@@ -123,11 +116,10 @@ const ActiveVisitors = () => {
                   )}
                 </tbody>
               </table>
+            </div>
             )}
           </div>
-        </main>
-      </div>
-    </div>
+    </>
   );
 };
 

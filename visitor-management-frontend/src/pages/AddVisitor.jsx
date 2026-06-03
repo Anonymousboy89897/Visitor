@@ -1,7 +1,4 @@
 import React, { useState } from 'react';
-import Sidebar from '../components/Sidebar';
-import Navbar from '../components/Navbar';
-
 import { useNavigate } from 'react-router-dom';
 
 const AddVisitor = () => {
@@ -63,12 +60,8 @@ const AddVisitor = () => {
   };
 
   return (
-    <div className="flex h-screen bg-gray-100">
-      <Sidebar />
-      <div className="flex-1 flex flex-col overflow-hidden">
-        <Navbar title="Add New Visitor" />
-        <main className="flex-1 overflow-x-hidden overflow-y-auto bg-slate-50 p-8">
-          <div className="max-w-4xl mx-auto">
+    <>
+      <div className="max-w-4xl mx-auto">
             <div className="mb-8">
               <h2 className="text-3xl font-extrabold bg-clip-text text-transparent bg-gradient-to-r from-indigo-600 to-purple-600">
                 Register New Visitor
@@ -155,10 +148,8 @@ const AddVisitor = () => {
                 </div>
               </form>
             </div>
-          </div>
-        </main>
       </div>
-    </div>
+    </>
   );
 };
 

@@ -10,13 +10,14 @@ import VisitorHistory from '../pages/VisitorHistory';
 import ActiveVisitors from '../pages/ActiveVisitors';
 import Reports from '../pages/Reports';
 import NotFound from '../pages/NotFound';
+import Layout from '../components/Layout';
 
 const PrivateRoute = ({ children }) => {
   const { isAuthenticated, loading } = useContext(AuthContext);
   
   if (loading) return <div>Loading...</div>;
   
-  return isAuthenticated ? children : <Navigate to="/login" />;
+  return isAuthenticated ? <Layout>{children}</Layout> : <Navigate to="/login" />;
 };
 
 const AppRoutes = () => {
