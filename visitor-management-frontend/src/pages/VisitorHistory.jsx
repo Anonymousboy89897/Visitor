@@ -48,6 +48,48 @@ const VisitorHistory = () => {
     v.phone?.includes(search)
   );
 
+  const exportToExcel = () => {
+    if (filteredVisitors.length === 0) {
+      alert("No data to export");
+      return;
+    }
+    
+    const headers = ['Visitor ID', 'Date', 'Full Name', 'Phone', 'Email', 'Purpose', 'Person to Meet', 'Person Name / Dept', 'ID Type', 'ID Number', 'Vehicle', 'Status', 'Check In', 'Check Out'];
+    
+    const csvRows = [];
+    csvRows.push(headers.join(','));
+    
+    filteredVisitors.forEach(v => {
+      const row = [
+        v.visitor_id || '',
+        v.created_at?.split(' ')[0] || v.check_in?.split(' ')[0] || '',
+        `"${v.full_name || ''}"`,
+        `"${v.phone || ''}"`,
+        `"${v.email || ''}"`,
+        `"${v.purpose || ''}"`,
+        `"${v.person_to_meet || ''}"`,
+        `"${v.department || ''}"`,
+        `"${v.idType || ''}"`,
+        `"${v.idNumber || ''}"`,
+        `"${v.vehicleNumber || ''}"`,
+        v.status || '',
+        `"${v.check_in || ''}"`,
+        `"${v.check_out || ''}"`
+      ];
+      csvRows.push(row.join(','));
+    });
+    
+    const csvString = csvRows.join('\n');
+    const blob = new Blob([csvString], { type: 'text/csv;charset=utf-8;' });
+    const url = URL.createObjectURL(blob);
+    const link = document.createElement('a');
+    link.href = url;
+    link.setAttribute('download', `Visitor_Log_${new Date().toLocaleDateString().replace(/\//g, '-')}.csv`);
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+  };
+
   return (
     <>
       <div className="mb-8 flex flex-col md:flex-row md:justify-between md:items-end gap-4">
@@ -71,7 +113,10 @@ const VisitorHistory = () => {
                 />
               </div>
               
-              <button className="flex items-center space-x-2 bg-gradient-to-r from-emerald-500 to-teal-500 hover:from-emerald-600 hover:to-teal-600 text-white font-bold px-6 py-3 rounded-xl shadow-lg shadow-emerald-200 transform hover:-translate-y-0.5 transition-all duration-200">
+              <button 
+                onClick={exportToExcel}
+                className="flex items-center space-x-2 bg-gradient-to-r from-emerald-500 to-teal-500 hover:from-emerald-600 hover:to-teal-600 text-white font-bold px-6 py-3 rounded-xl shadow-lg shadow-emerald-200 transform hover:-translate-y-0.5 transition-all duration-200"
+              >
                 <FaDownload />
                 <span>Export Excel</span>
               </button>
