@@ -5,6 +5,8 @@ const VisitorHistory = () => {
   const [visitors, setVisitors] = useState([]);
   const [loading, setLoading] = useState(true);
   const [search, setSearch] = useState('');
+  const [filterMonth, setFilterMonth] = useState('');
+  const [filterDate, setFilterDate] = useState('');
 
   const fetchVisitors = async () => {
     try {
@@ -43,10 +45,34 @@ const VisitorHistory = () => {
     }
   };
 
-  const filteredVisitors = visitors.filter(v => 
-    v.full_name?.toLowerCase().includes(search.toLowerCase()) || 
-    v.phone?.includes(search)
-  );
+  const filteredVisitors = visitors.filter(v => {
+    const matchesSearch = v.full_name?.toLowerCase().includes(search.toLowerCase()) || v.phone?.includes(search);
+    
+    let matchesMonth = true;
+    let matchesDate = true;
+    
+    const recordDateStr = v.created_at || v.check_in;
+    
+    if (recordDateStr) {
+      const recordDate = new Date(recordDateStr);
+      // Check if it's a valid date
+      if (!isNaN(recordDate.getTime())) {
+        if (filterMonth) {
+          const recordMonth = `${recordDate.getFullYear()}-${String(recordDate.getMonth() + 1).padStart(2, '0')}`;
+          matchesMonth = recordMonth === filterMonth;
+        }
+        
+        if (filterDate) {
+          const recordDay = `${recordDate.getFullYear()}-${String(recordDate.getMonth() + 1).padStart(2, '0')}-${String(recordDate.getDate()).padStart(2, '0')}`;
+          matchesDate = recordDay === filterDate;
+        }
+      }
+    } else {
+      if (filterMonth || filterDate) return false;
+    }
+
+    return matchesSearch && matchesMonth && matchesDate;
+  });
 
   const exportToExcel = () => {
     if (filteredVisitors.length === 0) {
@@ -99,27 +125,59 @@ const VisitorHistory = () => {
               </h2>
               <p className="text-slate-500 mt-2 font-medium">Complete log of all past and present visitor records.</p>
             </div>
-            <div className="flex gap-4">
-              <div className="relative w-72">
-                <span className="absolute inset-y-0 left-0 flex items-center pl-4 text-slate-400">
-                  <FaSearch />
-                </span>
-                <input 
-                  type="text" 
-                  placeholder="Search history..." 
-                  className="w-full pl-12 pr-4 py-3 bg-white border border-slate-200 rounded-xl focus:ring-2 focus:ring-indigo-200 focus:border-indigo-500 focus:outline-none shadow-sm transition-all"
-                  value={search}
-                  onChange={(e) => setSearch(e.target.value)}
-                />
+            <div className="flex flex-col items-end gap-3">
+              <div className="flex gap-4">
+                <div className="relative w-72">
+                  <span className="absolute inset-y-0 left-0 flex items-center pl-4 text-slate-400">
+                    <FaSearch />
+                  </span>
+                  <input 
+                    type="text" 
+                    placeholder="Search name or phone..." 
+                    className="w-full pl-12 pr-4 py-3 bg-white border border-slate-200 rounded-xl focus:ring-2 focus:ring-indigo-200 focus:border-indigo-500 focus:outline-none shadow-sm transition-all"
+                    value={search}
+                    onChange={(e) => setSearch(e.target.value)}
+                  />
+                </div>
+                
+                <button 
+                  onClick={exportToExcel}
+                  className="flex items-center space-x-2 bg-gradient-to-r from-emerald-500 to-teal-500 hover:from-emerald-600 hover:to-teal-600 text-white font-bold px-6 py-3 rounded-xl shadow-lg shadow-emerald-200 transform hover:-translate-y-0.5 transition-all duration-200"
+                >
+                  <FaDownload />
+                  <span>Export CSV</span>
+                </button>
               </div>
-              
-              <button 
-                onClick={exportToExcel}
-                className="flex items-center space-x-2 bg-gradient-to-r from-emerald-500 to-teal-500 hover:from-emerald-600 hover:to-teal-600 text-white font-bold px-6 py-3 rounded-xl shadow-lg shadow-emerald-200 transform hover:-translate-y-0.5 transition-all duration-200"
-              >
-                <FaDownload />
-                <span>Export Excel</span>
-              </button>
+
+              {/* Date Filters */}
+              <div className="flex items-center gap-3 bg-white px-4 py-2 rounded-xl border border-slate-200 shadow-sm">
+                <label className="text-xs font-bold text-slate-500 uppercase tracking-wider">Month:</label>
+                <input 
+                  type="month" 
+                  value={filterMonth}
+                  onChange={(e) => { setFilterMonth(e.target.value); setFilterDate(''); }}
+                  className="text-sm bg-slate-50 border border-slate-200 rounded-md px-2 py-1 focus:outline-none focus:border-indigo-500 text-slate-700 font-medium"
+                />
+                
+                <span className="text-slate-300">|</span>
+                
+                <label className="text-xs font-bold text-slate-500 uppercase tracking-wider">Day:</label>
+                <input 
+                  type="date" 
+                  value={filterDate}
+                  onChange={(e) => { setFilterDate(e.target.value); setFilterMonth(''); }}
+                  className="text-sm bg-slate-50 border border-slate-200 rounded-md px-2 py-1 focus:outline-none focus:border-indigo-500 text-slate-700 font-medium"
+                />
+
+                {(filterMonth || filterDate) && (
+                  <button 
+                    onClick={() => { setFilterMonth(''); setFilterDate(''); }}
+                    className="ml-2 text-xs font-bold text-red-500 hover:text-red-700 bg-red-50 px-2 py-1 rounded-md transition-colors"
+                  >
+                    Clear Filters
+                  </button>
+                )}
+              </div>
             </div>
           </div>
 
