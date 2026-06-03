@@ -1,5 +1,9 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { 
+  FaUser, FaPhone, FaEnvelope, FaBuilding, 
+  FaIdCard, FaCar, FaBriefcase, FaIdBadge
+} from 'react-icons/fa';
 
 const AddVisitor = () => {
   const navigate = useNavigate();
@@ -61,92 +65,155 @@ const AddVisitor = () => {
 
   return (
     <>
-      <div className="max-w-4xl mx-auto">
-            <div className="mb-8">
-              <h2 className="text-3xl font-extrabold bg-clip-text text-transparent bg-gradient-to-r from-indigo-600 to-purple-600">
-                Register New Visitor
-              </h2>
-              <p className="text-slate-500 mt-2 font-medium">Enter visitor details to generate a new check-in record.</p>
+      <div className="max-w-5xl mx-auto">
+        <div className="mb-10 text-center md:text-left flex flex-col md:flex-row md:items-end justify-between">
+          <div>
+            <h2 className="text-4xl font-black bg-clip-text text-transparent bg-gradient-to-r from-indigo-600 via-purple-600 to-pink-500 tracking-tight">
+              Register Visitor
+            </h2>
+            <p className="text-slate-500 mt-2 font-medium text-lg">Securely check-in a new guest to the premises.</p>
+          </div>
+        </div>
+        
+        {message && (
+          <div className={`mb-8 p-5 rounded-2xl shadow-sm flex items-center gap-3 ${message.includes('success') ? 'bg-emerald-50 text-emerald-800 border border-emerald-200' : 'bg-red-50 text-red-800 border border-red-200'}`}>
+            <div className={`p-2 rounded-full ${message.includes('success') ? 'bg-emerald-200' : 'bg-red-200'}`}>
+              {message.includes('success') ? <FaIdBadge /> : <FaIdCard />}
             </div>
-            
-            {message && (
-              <div className={`mb-6 p-4 rounded-xl shadow-sm ${message.includes('success') ? 'bg-emerald-50 text-emerald-700 border border-emerald-200' : 'bg-red-50 text-red-700 border border-red-200'}`}>
-                {message}
-              </div>
-            )}
+            <p className="font-bold">{message}</p>
+          </div>
+        )}
 
-            <div className="bg-white rounded-3xl shadow-xl shadow-slate-200/50 p-8 border border-slate-100 relative overflow-hidden">
-              <div className="absolute top-0 inset-x-0 h-1 bg-gradient-to-r from-indigo-500 via-purple-500 to-pink-500"></div>
+        <form onSubmit={handleSubmit} className="space-y-8">
+          
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
+            
+            {/* Section 1: Personal Details */}
+            <div className="bg-white rounded-3xl shadow-xl shadow-slate-200/40 p-8 border border-slate-100 relative overflow-hidden group hover:shadow-2xl hover:shadow-indigo-200/40 transition-all duration-300">
+              <div className="absolute top-0 left-0 w-2 h-full bg-gradient-to-b from-indigo-500 to-purple-500"></div>
+              <h3 className="text-xl font-bold text-slate-800 mb-6 flex items-center gap-3">
+                <span className="p-2 bg-indigo-50 text-indigo-600 rounded-lg"><FaUser /></span>
+                Personal Information
+              </h3>
               
-              <form onSubmit={handleSubmit} className="space-y-6 relative z-10">
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                  <div>
-                    <label className="block text-sm font-bold text-slate-700 mb-2">Full Name *</label>
-                    <input required type="text" name="fullName" value={formData.fullName} onChange={handleChange} className="w-full px-4 py-3 bg-slate-50 border border-slate-200 rounded-xl focus:bg-white focus:outline-none focus:ring-2 focus:ring-indigo-200 focus:border-indigo-500 transition-all" />
+              <div className="space-y-5">
+                <div>
+                  <label className="block text-sm font-bold text-slate-700 mb-2">Full Name <span className="text-red-500">*</span></label>
+                  <div className="relative">
+                    <span className="absolute inset-y-0 left-0 flex items-center pl-4 text-slate-400"><FaUser /></span>
+                    <input required type="text" name="fullName" value={formData.fullName} onChange={handleChange} className="w-full pl-11 pr-4 py-3 bg-slate-50 border border-slate-200 rounded-xl focus:bg-white focus:outline-none focus:ring-2 focus:ring-indigo-200 focus:border-indigo-500 transition-all" placeholder="John Doe" />
                   </div>
+                </div>
+                
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-5">
                   <div>
-                    <label className="block text-sm font-bold text-slate-700 mb-2">Phone Number *</label>
-                    <input required type="text" name="phone" value={formData.phone} onChange={handleChange} className="w-full px-4 py-3 bg-slate-50 border border-slate-200 rounded-xl focus:bg-white focus:outline-none focus:ring-2 focus:ring-indigo-200 focus:border-indigo-500 transition-all" />
+                    <label className="block text-sm font-bold text-slate-700 mb-2">Phone <span className="text-red-500">*</span></label>
+                    <div className="relative">
+                      <span className="absolute inset-y-0 left-0 flex items-center pl-4 text-slate-400"><FaPhone /></span>
+                      <input required type="tel" name="phone" value={formData.phone} onChange={handleChange} className="w-full pl-11 pr-4 py-3 bg-slate-50 border border-slate-200 rounded-xl focus:bg-white focus:outline-none focus:ring-2 focus:ring-indigo-200 focus:border-indigo-500 transition-all" placeholder="+91 9876543210" />
+                    </div>
                   </div>
                   <div>
                     <label className="block text-sm font-bold text-slate-700 mb-2">Email Address</label>
-                    <input type="email" name="email" value={formData.email} onChange={handleChange} className="w-full px-4 py-3 bg-slate-50 border border-slate-200 rounded-xl focus:bg-white focus:outline-none focus:ring-2 focus:ring-indigo-200 focus:border-indigo-500 transition-all" />
+                    <div className="relative">
+                      <span className="absolute inset-y-0 left-0 flex items-center pl-4 text-slate-400"><FaEnvelope /></span>
+                      <input type="email" name="email" value={formData.email} onChange={handleChange} className="w-full pl-11 pr-4 py-3 bg-slate-50 border border-slate-200 rounded-xl focus:bg-white focus:outline-none focus:ring-2 focus:ring-indigo-200 focus:border-indigo-500 transition-all" placeholder="john@example.com" />
+                    </div>
+                  </div>
+                </div>
+
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-5 pt-2">
+                  <div>
+                    <label className="block text-sm font-bold text-slate-700 mb-2">ID Type <span className="text-red-500">*</span></label>
+                    <div className="relative">
+                      <span className="absolute inset-y-0 left-0 flex items-center pl-4 text-slate-400"><FaIdCard /></span>
+                      <select required name="idType" value={formData.idType} onChange={handleChange} className="w-full pl-11 pr-4 py-3 bg-slate-50 border border-slate-200 rounded-xl focus:bg-white focus:outline-none focus:ring-2 focus:ring-indigo-200 focus:border-indigo-500 transition-all appearance-none">
+                        <option value="Aadhar">Aadhar Card</option>
+                        <option value="PAN">PAN Card</option>
+                        <option value="Driving License">Driving License</option>
+                        <option value="Passport">Passport</option>
+                      </select>
+                    </div>
                   </div>
                   <div>
-                    <label className="block text-sm font-bold text-slate-700 mb-2">Purpose of Visit *</label>
-                    <select required name="purpose" value={formData.purpose} onChange={handleChange} className="w-full px-4 py-3 bg-slate-50 border border-slate-200 rounded-xl focus:bg-white focus:outline-none focus:ring-2 focus:ring-indigo-200 focus:border-indigo-500 transition-all">
-                      <option value="">Select Purpose</option>
+                    <label className="block text-sm font-bold text-slate-700 mb-2">ID Number <span className="text-red-500">*</span></label>
+                    <input required type="text" name="idNumber" value={formData.idNumber} onChange={handleChange} className="w-full px-4 py-3 bg-slate-50 border border-slate-200 rounded-xl focus:bg-white focus:outline-none focus:ring-2 focus:ring-indigo-200 focus:border-indigo-500 transition-all font-mono" placeholder="XXXX-XXXX-XXXX" />
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            {/* Section 2: Visit Details */}
+            <div className="bg-white rounded-3xl shadow-xl shadow-slate-200/40 p-8 border border-slate-100 relative overflow-hidden group hover:shadow-2xl hover:shadow-pink-200/40 transition-all duration-300">
+              <div className="absolute top-0 left-0 w-2 h-full bg-gradient-to-b from-pink-500 to-orange-400"></div>
+              <h3 className="text-xl font-bold text-slate-800 mb-6 flex items-center gap-3">
+                <span className="p-2 bg-pink-50 text-pink-600 rounded-lg"><FaBuilding /></span>
+                Visit Details
+              </h3>
+              
+              <div className="space-y-5">
+                <div>
+                  <label className="block text-sm font-bold text-slate-700 mb-2">Purpose of Visit <span className="text-red-500">*</span></label>
+                  <div className="relative">
+                    <span className="absolute inset-y-0 left-0 flex items-center pl-4 text-slate-400"><FaBriefcase /></span>
+                    <select required name="purpose" value={formData.purpose} onChange={handleChange} className="w-full pl-11 pr-4 py-3 bg-slate-50 border border-slate-200 rounded-xl focus:bg-white focus:outline-none focus:ring-2 focus:ring-pink-200 focus:border-pink-500 transition-all appearance-none">
+                      <option value="">Select Purpose...</option>
                       <option value="Meeting">Meeting</option>
                       <option value="Internship">Internship</option>
                       <option value="Personal work">Personal work</option>
                       <option value="Student related query">Student related query</option>
                     </select>
                   </div>
+                </div>
+
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-5">
                   <div>
-                    <label className="block text-sm font-bold text-slate-700 mb-2">Person to Meet *</label>
-                    <input required type="text" name="personToMeet" value={formData.personToMeet} onChange={handleChange} className="w-full px-4 py-3 bg-slate-50 border border-slate-200 rounded-xl focus:bg-white focus:outline-none focus:ring-2 focus:ring-indigo-200 focus:border-indigo-500 transition-all" />
+                    <label className="block text-sm font-bold text-slate-700 mb-2">Person to Meet <span className="text-red-500">*</span></label>
+                    <input required type="text" name="personToMeet" value={formData.personToMeet} onChange={handleChange} className="w-full px-4 py-3 bg-slate-50 border border-slate-200 rounded-xl focus:bg-white focus:outline-none focus:ring-2 focus:ring-pink-200 focus:border-pink-500 transition-all" placeholder="Host Name" />
                   </div>
                   <div>
-                    <label className="block text-sm font-bold text-slate-700 mb-2">Person Name *</label>
-                    <input required type="text" name="department" value={formData.department} onChange={handleChange} className="w-full px-4 py-3 bg-slate-50 border border-slate-200 rounded-xl focus:bg-white focus:outline-none focus:ring-2 focus:ring-indigo-200 focus:border-indigo-500 transition-all" />
-                  </div>
-                  <div>
-                    <label className="block text-sm font-bold text-slate-700 mb-2">ID Type *</label>
-                    <select required name="idType" value={formData.idType} onChange={handleChange} className="w-full px-4 py-3 bg-slate-50 border border-slate-200 rounded-xl focus:bg-white focus:outline-none focus:ring-2 focus:ring-indigo-200 focus:border-indigo-500 transition-all">
-                      <option value="Aadhar">Aadhar</option>
-                      <option value="PAN">PAN</option>
-                      <option value="Driving License">Driving License</option>
-                      <option value="Passport">Passport</option>
-                    </select>
-                  </div>
-                  <div>
-                    <label className="block text-sm font-bold text-slate-700 mb-2">ID Number *</label>
-                    <input required type="text" name="idNumber" value={formData.idNumber} onChange={handleChange} className="w-full px-4 py-3 bg-slate-50 border border-slate-200 rounded-xl focus:bg-white focus:outline-none focus:ring-2 focus:ring-indigo-200 focus:border-indigo-500 transition-all" />
-                  </div>
-                  <div>
-                    <label className="block text-sm font-bold text-slate-700 mb-2">Vehicle Number</label>
-                    <input type="text" name="vehicleNumber" value={formData.vehicleNumber} onChange={handleChange} className="w-full px-4 py-3 bg-slate-50 border border-slate-200 rounded-xl focus:bg-white focus:outline-none focus:ring-2 focus:ring-indigo-200 focus:border-indigo-500 transition-all" />
+                    <label className="block text-sm font-bold text-slate-700 mb-2">Person Name <span className="text-red-500">*</span></label>
+                    <input required type="text" name="department" value={formData.department} onChange={handleChange} className="w-full px-4 py-3 bg-slate-50 border border-slate-200 rounded-xl focus:bg-white focus:outline-none focus:ring-2 focus:ring-pink-200 focus:border-pink-500 transition-all" placeholder="Host's Full Name" />
                   </div>
                 </div>
 
-                <div className="flex justify-end mt-10 pt-6 border-t border-slate-100">
-                  <button 
-                    type="button" 
-                    onClick={() => navigate('/')} 
-                    className="px-8 py-3.5 border-2 border-slate-200 text-slate-600 font-bold rounded-xl mr-4 hover:bg-slate-50 hover:border-slate-300 transition-all"
-                  >
-                    Cancel
-                  </button>
-                  <button 
-                    type="submit" 
-                    disabled={loading}
-                    className="px-8 py-3.5 bg-gradient-to-r from-indigo-600 to-purple-600 hover:from-indigo-700 hover:to-purple-700 text-white font-bold rounded-xl shadow-lg shadow-indigo-200 transform hover:-translate-y-0.5 transition-all duration-200 disabled:opacity-50 disabled:transform-none"
-                  >
-                    {loading ? 'Saving...' : 'Register Visitor'}
-                  </button>
+                <div className="pt-2">
+                  <label className="block text-sm font-bold text-slate-700 mb-2">Vehicle Number (Optional)</label>
+                  <div className="relative">
+                    <span className="absolute inset-y-0 left-0 flex items-center pl-4 text-slate-400"><FaCar /></span>
+                    <input type="text" name="vehicleNumber" value={formData.vehicleNumber} onChange={handleChange} className="w-full pl-11 pr-4 py-3 bg-slate-50 border border-slate-200 rounded-xl focus:bg-white focus:outline-none focus:ring-2 focus:ring-pink-200 focus:border-pink-500 transition-all font-mono uppercase" placeholder="UP 16 XX 0000" />
+                  </div>
                 </div>
-              </form>
+              </div>
             </div>
+
+          </div>
+
+          {/* Action Buttons */}
+          <div className="flex flex-col sm:flex-row justify-end items-center gap-4 mt-10">
+            <button 
+              type="button" 
+              onClick={() => navigate('/')} 
+              className="w-full sm:w-auto px-8 py-4 border-2 border-slate-200 text-slate-600 font-bold rounded-2xl hover:bg-slate-50 hover:text-slate-800 hover:border-slate-300 transition-all"
+            >
+              Cancel
+            </button>
+            <button 
+              type="submit" 
+              disabled={loading}
+              className="w-full sm:w-auto px-10 py-4 bg-slate-900 hover:bg-black text-white font-bold rounded-2xl shadow-xl shadow-slate-900/20 transform hover:-translate-y-1 transition-all duration-200 disabled:opacity-50 disabled:transform-none flex items-center justify-center gap-3"
+            >
+              {loading ? (
+                <>
+                  <div className="w-5 h-5 border-2 border-white/30 border-t-white rounded-full animate-spin"></div>
+                  Processing...
+                </>
+              ) : (
+                'Generate Entry Pass'
+              )}
+            </button>
+          </div>
+        </form>
       </div>
     </>
   );
