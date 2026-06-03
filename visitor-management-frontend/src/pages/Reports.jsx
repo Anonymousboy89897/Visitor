@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { FaDownload, FaChartLine, FaUsers, FaBuilding, FaBriefcase } from 'react-icons/fa';
+import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, Cell } from 'recharts';
 
 const Reports = () => {
   const [visitors, setVisitors] = useState([]);
@@ -104,6 +105,30 @@ const Reports = () => {
   });
   const mostCommonPurpose = Object.keys(purposeCounts).sort((a,b) => purposeCounts[b] - purposeCounts[a])[0] || 'N/A';
 
+  const chartData = [];
+  if (filterDate) {
+    // If a specific day is selected, show Visitors by Purpose
+    Object.keys(purposeCounts).forEach(key => {
+      chartData.push({ name: key, visitors: purposeCounts[key] });
+    });
+    chartData.sort((a,b) => b.visitors - a.visitors);
+  } else {
+    // Otherwise, show Visitors over Time (by Date)
+    const dateMap = {};
+    filteredVisitors.forEach(v => {
+      const recordDateStr = v.created_at?.split(' ')[0] || v.check_in?.split(' ')[0];
+      if (recordDateStr) {
+        dateMap[recordDateStr] = (dateMap[recordDateStr] || 0) + 1;
+      }
+    });
+    
+    Object.keys(dateMap).sort().forEach(key => {
+      // Just take the MM-DD for cleaner chart labels
+      const shortDate = key.split('-').slice(1).join('/');
+      chartData.push({ name: shortDate || key, visitors: dateMap[key] });
+    });
+  }
+
   return (
     <div className="max-w-6xl mx-auto space-y-8">
       <div className="flex flex-col md:flex-row md:items-end justify-between gap-6">
@@ -199,50 +224,49 @@ const Reports = () => {
 
           <div className="bg-white rounded-3xl shadow-xl shadow-slate-200/50 border border-slate-100 overflow-hidden relative mt-8">
             <div className="absolute top-0 inset-x-0 h-1 bg-gradient-to-r from-blue-400 to-indigo-500"></div>
-            <div className="p-6 border-b border-slate-100 flex justify-between items-center bg-slate-50/50">
+            <div className="p-6 border-b border-slate-100 bg-slate-50/50">
               <h3 className="font-bold text-slate-700 flex items-center gap-2">
-                <FaUsers className="text-indigo-400" /> Preview Data ({filteredVisitors.length} records)
+                <FaChartLine className="text-indigo-400" /> 
+                {filterDate ? 'Visitors by Purpose (Daily Distribution)' : 'Visitor Trends Over Time'}
               </h3>
             </div>
-            <div className="overflow-x-auto">
-              <table className="min-w-full divide-y divide-gray-200">
-                <thead className="bg-slate-50/80 backdrop-blur-sm border-b border-slate-200">
-                  <tr>
-                    <th className="px-6 py-4 text-left text-xs font-bold text-slate-500 uppercase tracking-wider">Date</th>
-                    <th className="px-6 py-4 text-left text-xs font-bold text-slate-500 uppercase tracking-wider">Name</th>
-                    <th className="px-6 py-4 text-left text-xs font-bold text-slate-500 uppercase tracking-wider">Purpose</th>
-                    <th className="px-6 py-4 text-left text-xs font-bold text-slate-500 uppercase tracking-wider">Status</th>
-                  </tr>
-                </thead>
-                <tbody className="bg-white divide-y divide-slate-100">
-                  {filteredVisitors.slice(0, 10).map((visitor) => (
-                    <tr key={visitor.visitor_id} className="hover:bg-indigo-50/30 transition-colors">
-                      <td className="px-6 py-4 whitespace-nowrap text-sm text-slate-500 font-medium">{visitor.created_at?.split(' ')[0] || visitor.check_in?.split(' ')[0]}</td>
-                      <td className="px-6 py-4 whitespace-nowrap text-sm text-slate-900 font-bold">{visitor.full_name}</td>
-                      <td className="px-6 py-4 whitespace-nowrap text-sm text-slate-600">{visitor.purpose}</td>
-                      <td className="px-6 py-4 whitespace-nowrap text-sm">
-                        <span className={`px-2 py-1 inline-flex text-xs leading-5 font-bold rounded-full ${
-                          visitor.status === 'Active' ? 'bg-orange-100 text-orange-700' : 'bg-emerald-100 text-emerald-700'
-                        }`}>
-                          {visitor.status || 'Completed'}
-                        </span>
-                      </td>
-                    </tr>
-                  ))}
-                  {filteredVisitors.length > 10 && (
-                    <tr>
-                      <td colSpan="4" className="px-6 py-4 text-center text-sm font-bold text-slate-400 bg-slate-50">
-                        + {filteredVisitors.length - 10} more records (Download to view all)
-                      </td>
-                    </tr>
-                  )}
-                  {filteredVisitors.length === 0 && (
-                    <tr>
-                      <td colSpan="4" className="px-6 py-12 text-center text-slate-500 font-medium">No records found for this period.</td>
-                    </tr>
-                  )}
-                </tbody>
-              </table>
+            <div className="p-6">
+              {chartData.length > 0 ? (
+                <div className="h-80 w-full">
+                  <ResponsiveContainer width="100%" height="100%">
+                    <BarChart data={chartData} margin={{ top: 10, right: 30, left: 0, bottom: 20 }}>
+                      <CartesianGrid strokeDasharray="3 3" vertical={false} stroke="#e2e8f0" />
+                      <XAxis 
+                        dataKey="name" 
+                        axisLine={false} 
+                        tickLine={false} 
+                        tick={{ fill: '#64748b', fontSize: 12, fontWeight: 600 }} 
+                        dy={10}
+                      />
+                      <YAxis 
+                        allowDecimals={false} 
+                        axisLine={false} 
+                        tickLine={false} 
+                        tick={{ fill: '#64748b', fontSize: 12, fontWeight: 600 }} 
+                        dx={-10}
+                      />
+                      <Tooltip 
+                        cursor={{ fill: '#f8fafc' }} 
+                        contentStyle={{ borderRadius: '12px', border: '1px solid #e2e8f0', boxShadow: '0 10px 15px -3px rgb(0 0 0 / 0.1)', fontWeight: 'bold' }}
+                      />
+                      <Bar dataKey="visitors" fill="#6366f1" radius={[6, 6, 0, 0]} barSize={40}>
+                        {chartData.map((entry, index) => (
+                          <Cell key={`cell-${index}`} fill={index % 2 === 0 ? '#6366f1' : '#a855f7'} />
+                        ))}
+                      </Bar>
+                    </BarChart>
+                  </ResponsiveContainer>
+                </div>
+              ) : (
+                <div className="h-80 flex items-center justify-center text-slate-500 font-medium">
+                  No data to display on chart
+                </div>
+              )}
             </div>
           </div>
         </>
