@@ -101,7 +101,7 @@ const AddVisitor = () => {
                   <label className="block text-sm font-bold text-slate-700 mb-2">Full Name <span className="text-red-500">*</span></label>
                   <div className="relative">
                     <span className="absolute inset-y-0 left-0 flex items-center pl-4 text-slate-400"><FaUser /></span>
-                    <input required type="text" name="fullName" value={formData.fullName} onChange={handleChange} className="w-full pl-11 pr-4 py-3 bg-slate-50 border border-slate-200 rounded-xl focus:bg-white focus:outline-none focus:ring-2 focus:ring-indigo-200 focus:border-indigo-500 transition-all" placeholder="John Doe" />
+                    <input required minLength="2" type="text" name="fullName" value={formData.fullName} onChange={handleChange} className="w-full pl-11 pr-4 py-3 bg-slate-50 border border-slate-200 rounded-xl focus:bg-white focus:outline-none focus:ring-2 focus:ring-indigo-200 focus:border-indigo-500 transition-all" placeholder="John Doe" />
                   </div>
                 </div>
                 
@@ -110,7 +110,7 @@ const AddVisitor = () => {
                     <label className="block text-sm font-bold text-slate-700 mb-2">Phone <span className="text-red-500">*</span></label>
                     <div className="relative">
                       <span className="absolute inset-y-0 left-0 flex items-center pl-4 text-slate-400"><FaPhone /></span>
-                      <input required type="tel" name="phone" value={formData.phone} onChange={handleChange} className="w-full pl-11 pr-4 py-3 bg-slate-50 border border-slate-200 rounded-xl focus:bg-white focus:outline-none focus:ring-2 focus:ring-indigo-200 focus:border-indigo-500 transition-all" placeholder="+91 9876543210" />
+                      <input required type="tel" pattern="[0-9]{10}" maxLength="10" minLength="10" title="Please enter exactly 10 digits" name="phone" value={formData.phone} onChange={handleChange} className="w-full pl-11 pr-4 py-3 bg-slate-50 border border-slate-200 rounded-xl focus:bg-white focus:outline-none focus:ring-2 focus:ring-indigo-200 focus:border-indigo-500 transition-all" placeholder="9876543210" />
                     </div>
                   </div>
                   <div>
@@ -137,7 +137,7 @@ const AddVisitor = () => {
                   </div>
                   <div>
                     <label className="block text-sm font-bold text-slate-700 mb-2">ID Number <span className="text-red-500">*</span></label>
-                    <input required type="text" name="idNumber" value={formData.idNumber} onChange={handleChange} className="w-full px-4 py-3 bg-slate-50 border border-slate-200 rounded-xl focus:bg-white focus:outline-none focus:ring-2 focus:ring-indigo-200 focus:border-indigo-500 transition-all font-mono" placeholder="XXXX-XXXX-XXXX" />
+                    <input required minLength="4" type="text" name="idNumber" value={formData.idNumber} onChange={handleChange} className="w-full px-4 py-3 bg-slate-50 border border-slate-200 rounded-xl focus:bg-white focus:outline-none focus:ring-2 focus:ring-indigo-200 focus:border-indigo-500 transition-all font-mono" placeholder="XXXX-XXXX-XXXX" />
                   </div>
                 </div>
               </div>
@@ -169,11 +169,11 @@ const AddVisitor = () => {
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-5">
                   <div>
                     <label className="block text-sm font-bold text-slate-700 mb-2">Person to Meet <span className="text-red-500">*</span></label>
-                    <input required type="text" name="personToMeet" value={formData.personToMeet} onChange={handleChange} className="w-full px-4 py-3 bg-slate-50 border border-slate-200 rounded-xl focus:bg-white focus:outline-none focus:ring-2 focus:ring-pink-200 focus:border-pink-500 transition-all" placeholder="Host Name" />
+                    <input required minLength="2" type="text" name="personToMeet" value={formData.personToMeet} onChange={handleChange} className="w-full px-4 py-3 bg-slate-50 border border-slate-200 rounded-xl focus:bg-white focus:outline-none focus:ring-2 focus:ring-pink-200 focus:border-pink-500 transition-all" placeholder="Host Name" />
                   </div>
                   <div>
                     <label className="block text-sm font-bold text-slate-700 mb-2">Person Name <span className="text-red-500">*</span></label>
-                    <input required type="text" name="department" value={formData.department} onChange={handleChange} className="w-full px-4 py-3 bg-slate-50 border border-slate-200 rounded-xl focus:bg-white focus:outline-none focus:ring-2 focus:ring-pink-200 focus:border-pink-500 transition-all" placeholder="Host's Full Name" />
+                    <input required minLength="2" type="text" name="department" value={formData.department} onChange={handleChange} className="w-full px-4 py-3 bg-slate-50 border border-slate-200 rounded-xl focus:bg-white focus:outline-none focus:ring-2 focus:ring-pink-200 focus:border-pink-500 transition-all" placeholder="Host's Full Name" />
                   </div>
                 </div>
 
